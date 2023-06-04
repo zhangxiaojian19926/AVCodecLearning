@@ -20,7 +20,7 @@ window 开启nfs服务器
 
 1. 转到 https://github.com/winnfsd/winnfsd， 下载WinNFSd.exe
 
-2. powershell中运行.\WinNFSd.exe D：\public，创建D:\public共享目录
+2. powershell中运行.\WinNFSd.exe D:\public，创建D:\public共享目录
 
 3. 开发板上挂载：
 mount -t nfs -o nolock 192.168.100.200:/D/public nfs
