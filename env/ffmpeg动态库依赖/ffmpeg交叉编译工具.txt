@@ -1,0 +1,21 @@
+第一步配置：
+#./configure --prefix=/opt/arm_ffmpeg --enable-cross-compile --cross-prefix=/opt/rv1126_gcc/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- --arch=armv7-a --target-os=linux --enable-gpl --enable-nonfree --extra-cflags="-I/opt/arm_libx264/include" --extra-ldflags="-L/opt/arm_libx264/lib " --enable-libx264 --extra-libs="-ldl -fpic -shared" --enable-shared --pkg-config-flags=--static
+
+需要输出H265/PKG-CONFIG路径
+export PKG_CONFIG_PATH=/opt/arm_libx265_install/lib/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/opt/arm_libx264/lib/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/opt/arm_libsrt/lib/pkgconfig:$PKG_CONFIG_PATH
+
+Libx264和Libsrt交叉编译
+#./configure --prefix=/opt/arm32_ffmpeg_srt  --cross-prefix=/opt/rv1126_gcc/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- --enable-cross-compile --target-os=linux --cc=/opt/rv1126_gcc/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc --arch=arm  --enable-shared --disable-static --enable-ffmpeg --extra-cflags=-I/opt/arm_libsrt/include --extra-cflags=-I/opt/arm_libx264/include --extra-ldflags=-L/opt/arm_libx264/lib --extra-ldflags=-L/opt/arm_libsrt/lib --enable-libx264 --enable-gpl --extra-libs="-lm -lsrt -lssl -ldl -lcrypto"
+
+
+#./configure --prefix=/opt/arm32_ffmpeg_srt  --cross-prefix=/opt/rv1126_gcc/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- --enable-cross-compile --target-os=linux --cc=/opt/rv1126_gcc/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc --arch=arm  --enable-shared --disable-static --enable-ffmpeg --extra-cflags=-I/opt/arm_libsrt/include --extra-cflags=-I/opt/arm_libx264/include --extra-cflags=-I/opt/arm_libx265/include --extra-ldflags=-L/opt/arm_libx264/lib --extra-ldflags=-L/opt/arm_libx265/lib  --enable-libx264 --enable-libx265 --enable-gpl --pkg-config="pkg-config --static"
+
+
+./configure --prefix=/opt/arm32_ffmpeg_srt  --cross-prefix=/home/hao/shared/rv1126_rv1109_linux_sdk_v1.8.0_20210224/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- --enable-cross-compile --target-os=linux --cc=/home/hao/shared/rv1126_rv1109_linux_sdk_v1.8.0_20210224/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc --arch=arm  --enable-shared --disable-static --enable-ffmpeg --extra-cflags=-I/opt/arm_libsrt/include --extra-cflags=-I/opt/arm_libx264/include --extra-cflags=-I/opt/arm_libx265_install/include --extra-ldflags=-L/opt/arm_libx264/lib --extra-ldflags=-L/opt/arm_libx265_install/lib --extra-cflags=-I/opt/arm_libsrt/include --extra-ldflags=-L/opt/arm_libsrt/lib --enable-libsrt --enable-libx264 --enable-libx265 --enable-gpl --pkg-config="pkg-config --static" --extra-libs="-ldl"
+
+
+第二步：make
+
+第三步：make install

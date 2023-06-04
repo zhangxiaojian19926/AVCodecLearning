@@ -1,0 +1,92 @@
+用到的基础环境：
+ffmpeg、libopenssl、libx264 libx265 libsrt  
+
+
+1. 设置动态库路径
+
+export LD_LIBRARY_PATH=':/oem/usrlibs:/oem/usr/lib:/oem/lib:/oem/usrlibs:/oem/usr/lib:/oem/lib:/nfs/opt/arm_libsrt/lib:/nfs/opt/arm_libx264/lib:/nfs/opt/arm32_ffmpeg_srt/lib:/nfs/opt/arm_openssl/lib:/nfs/opt/arm_libx265_install/lib'
+
+开发板推流： ./rv1126_ffmpeg_main 1 srt://192.168.100:233:8080?streamid=uplive.sls.com/live/cz_01
+
+服务器收流：./sls -c ../sls.conf
+
+ffplay -x 400 -y 400 srt://192.168.100.233:8080?streamid=live.sls.com/live/cz_01 -fflags nobuffer
+
+
+rtmp拉流：
+开启nginx服务器：
+sudo /usr/local/nginx/sbin/nginx -s stop
+sudo /usr/local/nginx/sbin/nginx
+
+推流：./rv1126_ffmpeg_main 0 rtmp://192.168.100.233:1935/live/01
+
+拉流：.\ffplay.exe -x 400 -y 400 rtmp://192.168.100.233:1935/live/01 -fflags nobuffer
+
+
+2. 设置wsl网络适配器
+
+启用或关闭Windows功能 -> 开启hyper-v
+
+step1: 设置wsl网络桥接方式(window)：
+# 检查并以管理员身份运行PS并带上参数
+$currentWi = [Security.Principal.WindowsIdentity]::GetCurrent()
+$currentWp = [Security.Principal.WindowsPrincipal]$currentWi
+if( -not $currentWp.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
+{
+    $boundPara = ($MyInvocation.BoundParameters.Keys | foreach{'-{0} {1}' -f  $_ ,$MyInvocation.BoundParameters[$_]} ) -join ' '
+    $currentFile = $MyInvocation.MyCommand.Definition
+    $fullPara = $boundPara + ' ' + $args -join ' '
+    Start-Process "$psHome\pwsh.exe"   -ArgumentList "$currentFile $fullPara"   -verb runas
+    return
+}
+#首先随意执行一条wsl指令，确保wsl启动，这样后续步骤才会出现WSL网络
+echo "check the wsl whether it is running..."
+wsl --cd ~ -e ls
+echo "get network card infomation..."
+Get-NetAdapter  # 获取网卡信息
+echo "Bridging WSL network to Ethernet..."
+# 注意这里，这里是把wsl的虚拟网卡 [WSL] 桥接到我们主机网卡 [以太网]，如果你想桥接到wifi网卡那应该做相应的调整
+Set-VMSwitch WSL -NetAdapterName 以太网 
+echo "`n Modifying WSL network configuration..."
+# 这里会去运行我们wsl中的一个网络配置脚本
+wsl --cd ~ -e sh -c ./Programs/network.sh
+echo "`ndone!!!"
+pause
+
+step2: linux脚本
+#!/bin/bash
+new_ip=192.168.100.233
+brd=192.168.100.255
+gateway=192.168.0.1
+nameserver=192.168.0.1
+net_dev=eth0
+# 注意，下面这里需要用到wsl的sud执行命令，所以需要填写你wsl的密码
+echo "[your password]" | sudo -S ip addr del $(ip addr show $net_dev | grep 'inet\b' | awk '{print $2}' | head -n 1) dev $net_dev
+sudo ip addr add $new_ip/24 broadcast $brd dev $net_dev
+sudo ip route add 0.0.0.0/0 via $gateway dev $net_dev
+sudo sed -i "\$c nameserver $nameserver" /etc/resolv.conf
+
+step3：取消桥接
+# 检查并以管理员身份运行PS并带上参数
+$currentWi = [Security.Principal.WindowsIdentity]::GetCurrent()
+$currentWp = [Security.Principal.WindowsPrincipal]$currentWi
+if( -not $currentWp.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
+{
+    $boundPara = ($MyInvocation.BoundParameters.Keys | foreach{'-{0} {1}' -f  $_ ,$MyInvocation.BoundParameters[$_]} ) -join ' '
+    $currentFile = $MyInvocation.MyCommand.Definition
+    $fullPara = $boundPara + ' ' + $args -join ' '
+    Start-Process "$psHome\pwsh.exe"   -ArgumentList "$currentFile $fullPara"   -verb runas
+    return
+}
+echo "Unbridge Network..."
+Set-VMSwitch WSL  -SwitchType Internal
+echo "reboot wsl..."
+wsl --shutdown
+wsl --cd ~ -e ls
+echo "`ndone"
+pause
+
+
+
+
+

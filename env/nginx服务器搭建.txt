@@ -1,0 +1,47 @@
+nginx服务器搭建
+1. 安装依赖库
+sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev
+
+2. 下载ngix安装包
+wget http://nginx.org/download/nginx-1.21.6.tar.gz
+
+
+3. 下载 nginx-rtmp-module
+wget https://github.com/arut/nginx-rtmp-module/archive/master.zip
+
+4. 解压
+解压nginx文件
+tar -zxvf nginx-1.21.6.tar.gz
+解压rtmp模块
+unzip master.zip
+
+5. 编译
+进入解压后的nginx路径
+cd nginx-1.21.6
+编译:
+./configure --with-http_ssl_module --add-module=../nginx-rtmp-module-master
+安装:
+make
+sudo make install
+
+6. 打开nginx
+sudo /usr/local/nginx/sbin/nginx
+
+7.配置nginx使用RTMP, /usr/local/nginx/conf/nginx.conf:
+
+rtmp {
+server {
+listen 1935;
+chunk_size 4096;
+application live {
+live on;
+record off;
+}
+}
+}
+
+8. 重启 ngix服务器
+sudo /usr/local/nginx/sbin/nginx -s stop
+sudo /usr/local/nginx/sbin/nginx
+
+

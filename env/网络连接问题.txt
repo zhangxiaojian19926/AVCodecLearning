@@ -1,0 +1,14 @@
+网络连接问题
+
+一。问题场景
+当你ping某个IP地址时，发现出现“connect：network is unreachable”问题：
+
+
+二。解决办法
+1.运行命令ip addr，找到如下图所示的文件名称:
+
+2. 运行命令cd /etc/sysconfig/network-scripts进入/etc/sysconfig/network-scripts/目录下，并找到ifcfg-eno1677736文件：
+
+3.使用命令vi ifcfg-eno16777736修改该文件，将ONBOOT改为yes：
+
+4.最后执行命令service network restart重启就能ping通外网了：

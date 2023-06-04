@@ -1,0 +1,27 @@
+步骤一：
+解压libx265.tar.gz压缩包
+
+步骤二：
+修改CMakeList.txt文件
+
+路径在：vim currrnt_dir/libx265-git/source/CMakeLists.txt
+
+在文件头部添加以下信息：
+SET(CMAKE_SYSTEM_NAME Linux)
+SET(CMAKE_SYSTEM_PROCESSOR arm)
+SET(CMAKE_C_COMPILER "/home/hao/shared/rv1126_rv1109_linux_sdk_v1.8.0_20210224/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc")
+SET(CMAKE_CXX_COMPILER "/home/hao/shared/rv1126_rv1109_linux_sdk_v1.8.0_20210224/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++")
+set(CMAKE_EXE_LINKER_FLAGS "-ldl")
+#set(CMAKE_CXX_FLAGS -ldl)
+add_compile_options(-fPIC)
+
+步骤三：
+mkdir currrnt_dir/libx265-git/source/build 
+进入：cd currrnt_dir/libx265-git/source/build
+cmake -DCMAKE_INSTALL_PREFIX=/opt/arm_libx265_install ..
+
+make -j32
+
+make install
+
+

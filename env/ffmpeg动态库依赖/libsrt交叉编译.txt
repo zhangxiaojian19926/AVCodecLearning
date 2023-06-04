@@ -1,0 +1,15 @@
+把openssl的交叉编译库拷贝到
+
+打开openssl的lib目录：
+root@ubuntu:/opt/arm_openssl/lib# ls
+engines  engines-1.1  libcrypto.a  libcrypto.so  libcrypto.so.1.0.0  libssl.a  libssl.so  libssl.so.1.0.0  pkgconfig
+
+把里面的库全部拷贝到以下目录：
+cp -r /opt/arm_openssl/lib/* /opt/rv1126_gcc/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/8.3.0
+
+
+打开Openssl的include目录
+吧openssl目录拷贝到srt/haicrypt目录下
+
+
+./configure --prefix=/opt/arm_libsrt --openssl-include-dir=/opt/arm_openssl/include --openssl-ssl-library=/opt/arm_openssl/lib --with-compiler-prefix=/home/hao/shared/rv1126_rv1109_linux_sdk_v1.8.0_20210224/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-

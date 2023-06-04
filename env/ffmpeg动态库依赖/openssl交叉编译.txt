@@ -1,0 +1,10 @@
+
+
+./config no-asm shared no-async --prefix=/mnt/d/public/arm_openssl --cross-compile-prefix=/mnt/d/rk_sdk/rv1126_rv1109_v2.2.0_20210825/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
+
+git clone https://github.com/openssl/openssl.git
+
+问题解决
+arm-linux-gnueabihf-gcc: error: unrecognized command line option '-m64'
+
+继续修改Makefile，还要把该文件中的所有-m64标记删除，正常情况下应该有两处，第一处在CC的编译选项处下面，第二处如下图，可以把-m64一行注释掉

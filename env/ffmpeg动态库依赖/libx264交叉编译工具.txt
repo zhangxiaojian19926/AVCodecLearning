@@ -1,0 +1,13 @@
+第一步：
+./configure --prefix=/opt/arm_libx264 --host=arm-linux --cross-prefix=/home/hao/shared/rv1126_rv1109_linux_sdk_v1.8.0_20210224/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- --enable-shared 
+
+第二步:make; make install
+
+
+
+本机：
+
+第一步：
+ ./configure --prefix=/opt/arm_libx264 --host=arm-linux --cross-prefix=/mnt/d/rk_sdk/rv1126_rv1109_v2.2.0_20210825/prebuilts/gcc/linux-x86/arm/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf/bin/arm-linux-gnueabihf- --enable-shared
+
+第二步: sudo make; sudo make install

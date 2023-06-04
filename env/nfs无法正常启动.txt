@@ -1,0 +1,55 @@
+解决办法：https://blog.csdn.net/ouchao0727/article/details/50372059
+
+首先执行以下命令
+
+$ sudo apt-get purge rpcbind
+$ sudo apt-get install nfs-kernel-server
+然后配置以下export文件
+
+$ sudo vim /etc/exports
+添加一句（（your_share_name）用你创建的打算通过NFS共享的目录路径代替）
+/(your_share_name) *(rw,sync,no_subtree_check,no_root_squash) 
+重启rpcbind服务（老版本叫portmap服务）
+$ sudo service rpcbind start
+最后重启NFS服务器
+$ sudo /etc/init.d/nfs-kernel-server restart
+
+window 开启nfs服务器
+
+挂载命令：mount -t nfs -o nolock 192.168.100.200:/D/public /nfs
+
+1. 转到 https://github.com/winnfsd/winnfsd， 下载WinNFSd.exe
+
+2. powershell中运行.\WinNFSd.exe D：\public，创建D:\public共享目录
+
+3. 开发板上挂载：
+mount -t nfs -o nolock 192.168.100.200:/D/public nfs
+挂载到开发板nfs目录下
+
+4. 若出现mount: can't find /mnt/ in /etc/fstab，则需要将挂在目录新增到/etc/fstab文件中
+具体可参考：
+# <file system>                 <mount pt>              <type>          <options>               <dump>  <pass>
+192.168.100.200:/D/public       /mnt                    nfs             defaults                0       0
+
+192.168.100.200:/D/public  表示服务器挂载目录
+
+/mnt 默认挂载点
+
+nfs  文件系统或者是分区的类型
+
+defaults  rw，suid，dev，exec，auto，nouser，async等的组合
+
+dump选项：0为忽略，1为备份
+
+fsck选项：
+0为忽略。
+‘/etc/fstab’有几个用处：
+
+决定开机时自动挂载哪些介质；
+
+指定每个介质挂载时的可选项、载入点；
+
+系统用来挂载几个虚拟文件系统。
+
+
+
