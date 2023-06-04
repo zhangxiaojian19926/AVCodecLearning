@@ -39,6 +39,7 @@ if( -not $currentWp.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
     Start-Process "$psHome\pwsh.exe"   -ArgumentList "$currentFile $fullPara"   -verb runas
     return
 }
+
 #首先随意执行一条wsl指令，确保wsl启动，这样后续步骤才会出现WSL网络
 echo "check the wsl whether it is running..."
 wsl --cd ~ -e ls
