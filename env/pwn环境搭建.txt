@@ -1,0 +1,15 @@
+1.python环境错误
+AttributeError: module 'lib' has no attribute 'X509_V_FLAG_CB_ISSUER_CHECK'
+
+解决办法：
+》1 下载 https://bootstrap.pypa.io/get-pip.py
+》2 python3 get-pip.py
+》3 运行下面命令
+sudo rm -rf /usr/lib/python3/dist-packages/OpenSSL
+sudo pip3 install pyopenssl
+sudo pip3 install pyopenssl --upgrade
+
+
+具体安装
+
+https://blog.csdn.net/qq_56706120/article/details/129100261

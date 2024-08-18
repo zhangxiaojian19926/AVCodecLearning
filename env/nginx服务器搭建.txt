@@ -1,6 +1,6 @@
 nginx服务器搭建
 1. 安装依赖库
-sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev
+sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev zlib1g-dev
 
 2. 下载ngix安装包
 wget http://nginx.org/download/nginx-1.21.6.tar.gz
@@ -21,8 +21,7 @@ cd nginx-1.21.6
 编译:
 ./configure --with-http_ssl_module --add-module=../nginx-rtmp-module-master
 安装:
-make
-sudo make install
+sudo make && sudo make install
 
 6. 打开nginx
 sudo /usr/local/nginx/sbin/nginx

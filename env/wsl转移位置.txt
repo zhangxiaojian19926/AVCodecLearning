@@ -1,5 +1,11 @@
 1. 导出原有的Ubuntu 子系统，1导出，2注销原来的，3加载转移之后的，4设置ubuntu的默认登陆账号
-wsl --export Ubuntu-18.04 d:\wsl_install\Ubuntu-18.04.bak
-wsl --unregister Ubuntu-18.04
-wsl --import Ubuntu-18.04 D:\WSL2Ubuntu22.04LTS D:\wsl_install\Ubuntu-18.04.bak
-ubuntu1804.exe config --default-user zhang --version 2
+
+wsl --list   or  wsl -l -v
+
+wsl --export Ubuntu-22.04 d:\wsl_install\Ubuntu-22.04.bak
+
+wsl --unregister Ubuntu-22.04
+
+wsl --import Ubuntu-22.04 e:\wsl_22.04  e:\wsl_bak\Ubuntu-22.04.bak
+
+ubuntu2204.exe config --default-user zhang --version 2

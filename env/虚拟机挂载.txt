@@ -1,0 +1,8 @@
+1. 网络选择桥接方式，以太网适配器与虚拟机在同一网段
+
+
+2. 挂载命令
+
+设备端ip设置：ifconfig eth0 192.168.0.111
+
+mount -t nfs 192.168.0.105:/home/zhang/nfs /mnt/nfs -o nolock

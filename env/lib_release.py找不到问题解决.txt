@@ -1,0 +1,39 @@
+1、查找到lsb_release模块所在的目录
+sudo find / -name 'lsb_release.py'
+ 
+2、将其复制到设置python3.8的系统模块加载位置，也就是报错处subprocess.py所在的目录
+sudo cp  /usr/lib/python3/dist-packages/lsb_release.py /usr/local/python/lib/python3.8/
+
+
+解决问题
+ERROR: Exception:
+Traceback (most recent call last):
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_internal/cli/base_command.py", line 188, in _main
+    status = self.run(options, args)
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_internal/commands/uninstall.py", line 54, in run
+    session = self.get_default_session(options)
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_internal/cli/req_command.py", line 83, in get_default_session
+    self._session = self.enter_context(self._build_session(options))
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_internal/cli/req_command.py", line 93, in _build_session
+    session = PipSession(
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_internal/network/session.py", line 249, in __init__
+    self.headers["User-Agent"] = user_agent()
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_internal/network/session.py", line 132, in user_agent
+    zip(["name", "version", "id"], distro.linux_distribution()),
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_vendor/distro.py", line 125, in linux_distribution
+    return _distro.linux_distribution(full_distribution_name)
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_vendor/distro.py", line 681, in linux_distribution
+    self.version(),
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_vendor/distro.py", line 741, in version
+    self.lsb_release_attr('release'),
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_vendor/distro.py", line 903, in lsb_release_attr
+    return self._lsb_release_info.get(attribute, '')
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_vendor/distro.py", line 556, in __get__
+    ret = obj.__dict__[self._fname] = self._f(obj)
+  File "/usr/local/python/lib/python3.8/site-packages/pip/_vendor/distro.py", line 1014, in _lsb_release_info
+    stdout = subprocess.check_output(cmd, stderr=devnull)
+  File "/usr/local/python/lib/python3.8/subprocess.py", line 411, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/usr/local/python/lib/python3.8/subprocess.py", line 512, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '('lsb_release', '-a')' returned non-zero exit status 1.
